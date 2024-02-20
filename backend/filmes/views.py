@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from .serializers import FilmeSerializer, CategorySerializer
+from .serializers import FilmeSerializer
 from .models import *
 # Create your views here.
 class FilmeViewSet(viewsets.ModelViewSet):

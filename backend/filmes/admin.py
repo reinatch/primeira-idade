@@ -3,59 +3,64 @@ import nested_admin
 
 # Register your models here.
 from .models import *
-class CategoryInline(nested_admin.NestedStackedInline):
-    model = Category
-    extra = 1
+# class CategoryInline(admin.StackedInline):
+#     model = Category
+#     extra = 1
     
-# class FichaTecnicaInline(admin.StackedInline):
+# class FichaTecnicaInline(admin.TabularInline):
 #     model = FichaTecnica
+#     extra = 1    
+class EquipaInline(admin.StackedInline):
+    model = Equipa
+    extra = 0   
+class TecnicosInline(admin.StackedInline):
+    model = Tecnicos
+    extra = 0    
+class FinanciamentoInline(admin.StackedInline):
+    model = Financiamento
+    extra = 0    
+class FestivaisInline(admin.StackedInline):
+    model = Festivais
+    extra = 0    
+class PremiosInline(admin.StackedInline):
+    model = Premios
+    extra = 0    
+class ComercialInline(admin.StackedInline):
+    model = Comercial
+    extra = 0    
     
-# class EquipaInline(admin.StackedInline):
-#     model = Equipa
     
-# class TecnicosInline(admin.StackedInline):
-#     model = Tecnicos
-    
-# class FinanciamentoInline(admin.StackedInline):
-#     model = Financiamento
-    
-# class FestivaisInline(admin.StackedInline):
-#     model = Festivais
-    
-# class PremiosInline(admin.StackedInline):
-#     model = Premios
-    
-# class ComercialInline(admin.StackedInline):
-#     model = Comercial
-    
-    
-    
-# class PalavrasSobreInline(admin.StackedInline):
-#     model = PalavrasSobre
-    
-# class ImprensaInline(admin.StackedInline):
-#     model = Imprensa
-    
-# class OutrosVideosInline(admin.StackedInline):
-#     model = OutrosVideos
+class PalavrasSobreInline(admin.StackedInline):
+    model = PalavrasSobre
+    extra = 0    
+class ImprensaInline(admin.StackedInline):
+    model = Imprensa
+    extra = 0
 
-class FilmeAdmin(nested_admin.NestedModelAdmin):
+class OutrosVideosInline(admin.StackedInline):
+    model = OutrosVideos
+    extra = 0
+    class Meta:
+        fields = '__all__'
+
+class FilmeAdmin(admin.ModelAdmin):
     class Meta:
         model = Filme
         fields = '__all__'
+        
     prepopulated_fields = {'slug': ('title',)}
     inlines = [
-        CategoryInline,
+        # CategoryInline,
         # FichaTecnicaInline,
-        # EquipaInline,
-        # TecnicosInline,
-        # FinanciamentoInline,
-        # FestivaisInline,
-        # PremiosInline,
-        # ComercialInline,
-        # PalavrasSobreInline,
-        # ImprensaInline,
-        # OutrosVideosInline,
+        EquipaInline,
+        TecnicosInline,
+        FinanciamentoInline,
+        FestivaisInline,
+        PremiosInline,
+        ComercialInline,
+        PalavrasSobreInline,
+        ImprensaInline,
+        OutrosVideosInline,
     ]
     
 

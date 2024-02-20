@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-)q4b1hz%yar1gs^u%c1&oqi^bgqwz-7ey1*4*+^=m71yt5(f!*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -42,24 +42,25 @@ INSTALLED_APPS = [
     "corsheaders",
     'drf_yasg',
     'nested_admin',
+    "django_mysql",
     # 'djangorestframework_simplejwt',
 ]
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    # ]
 }
-CORS_ALLOWED_ORIGINS = [
-    # "https://example.com",
-    # "https://sub.example.com",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-]
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:8000",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     # "https://example.com",
+#     # "https://sub.example.com",
+#     "http://localhost:8000",
+#     "http://127.0.0.1:8000",
+# ]
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://localhost:8000",
+# ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -94,16 +95,16 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-# pymysql.install_as_MySQLdb()
+pymysql.install_as_MySQLdb()
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.mysql',
-        'ENGINE': 'mysql.connector.django',
-        'NAME': 'test',
+        'ENGINE': 'django.db.backends.mysql',
+        # 'ENGINE': 'mysql.connector.django',
+        'NAME': 'primaidade',
         'USER': 'root',
-        'PASSWORD':'',
-        'HOST':'127.0.0.1',
+        'PASSWORD': '',
         'PORT': '3306',
+        'HOST':'localhost',
         'OPTIONS': {
             # 'charset': 'utf8mb4',
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"

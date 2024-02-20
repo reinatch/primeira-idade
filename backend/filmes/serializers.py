@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Filme, Category
+from .models import Filme
 # from .models import Image
 
 # class ImageSerializer(serializers.ModelSerializer):
@@ -18,12 +18,6 @@ from .models import Filme, Category
 #         model = Page
 #         fields = '__all__'
 
-
-class CategorySerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Category
-        fields = '__all__'
 
 
 class FilmeSerializer(serializers.ModelSerializer):
