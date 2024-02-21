@@ -3,22 +3,11 @@ import nested_admin
 
 # Register your models here.
 from .models import *
-# class CategoryInline(admin.StackedInline):
-#     model = Category
-#     extra = 1
-    
-# class FichaTecnicaInline(admin.TabularInline):
-#     model = FichaTecnica
-#     extra = 1    
-class EquipaInline(admin.StackedInline):
-    model = Equipa
-    extra = 0   
+
 class TecnicosInline(admin.StackedInline):
     model = Tecnicos
     extra = 0    
-class FinanciamentoInline(admin.StackedInline):
-    model = Financiamento
-    extra = 0    
+
 class FestivaisInline(admin.StackedInline):
     model = Festivais
     extra = 0    
@@ -50,11 +39,7 @@ class FilmeAdmin(admin.ModelAdmin):
         
     prepopulated_fields = {'slug': ('title',)}
     inlines = [
-        # CategoryInline,
-        # FichaTecnicaInline,
-        EquipaInline,
         TecnicosInline,
-        FinanciamentoInline,
         FestivaisInline,
         PremiosInline,
         ComercialInline,

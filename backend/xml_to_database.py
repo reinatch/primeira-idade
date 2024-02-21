@@ -2,6 +2,8 @@ import xml.etree.ElementTree as ET
 import os
 import django
 import json
+from django.db.models import Max
+
 # from bs4 import BeautifulSoup
 # from bs4.element import MarkupResemblesUnicode
 # from galleryfield.models import BuiltInGalleryImage
@@ -11,6 +13,7 @@ from django.core.files import File
 import io
 # import chardet
 import codecs
+# from backend.filmes import models
 # Set up Django environment
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 django.setup()
@@ -19,7 +22,7 @@ if not settings.configured:
     settings.configure()
 
 # Import your Django models
-from filmes.models import Filme
+from filmes.models import *
 
 # Import the BuiltInGalleryImage model from the correct module
 # 
@@ -38,137 +41,242 @@ def populate_database_from_xml(xml_file):
     for item in root:
         print(item, '_________________________________________________________________')
         title = item.findtext('title')
+        slug = item.findtext('slug')
         ano = item.findtext('ano')
         com = item.findtext('com')
-        distribuicao_comercial = {
-            'estrear_em_sala': item.findtext('distribuicao_comercial_0_estreia_em_sala'),
-            'pais': item.findtext('distribuicao_comercial_0_pais'),
-            'tv': item.findtext('distribuicao_comercial_0_tv'),
-            'vod': item.findtext('distribuicao_comercial_0_vod')
-        }
         equipa_argumento = item.findtext('equipa_argumento')
         equipa_producao = item.findtext('equipa_producao')
         equipa_realizacao = item.findtext('equipa_realizacao')
-        festivais = [
-            item.findtext('festivais_0_festival'),
-            item.findtext('festivais_1_festival'),
-            item.findtext('festivais_2_festival'),
-            item.findtext('festivais_3_festival'),
-            item.findtext('festivais_4_festival'),
-            item.findtext('festivais_5_festival'),
-            item.findtext('festivais_6_festival'),
-            item.findtext('festivais_7_festival'),
-            item.findtext('festivais_8_festival'),
-            item.findtext('festivais_9_festival')
-        ]
+
         ficha_tecnica_ano = item.findtext('ficha_tecnica_ano')
         ficha_tecnica_duracao = item.findtext('ficha_tecnica_duracao')
         ficha_tecnica_genero = item.findtext('ficha_tecnica_genero')
         ficha_tecnica_suporte = item.findtext('ficha_tecnica_suporte')
         financiamento_financiadores = item.findtext('financiamento_financiadores')
         financiamento_orcamento = item.findtext('financiamento_orcamento')
-        imprensa = [
-            {
-                'artigo': item.findtext('imprensa_pais_0_artigo'),
-                'links': [{
-                    'link': item.findtext('imprensa_pais_0_artigo_0_links_0_link'),
-                    'titulo': item.findtext('imprensa_pais_0_artigo_0_titulo')
-                }]
-            },
-            {
-                'artigo': item.findtext('imprensa_pais_1_artigo'),
-                'links': [
-                    {
-                        'link': item.findtext('imprensa_pais_1_artigo_0_links_0_link'),
-                        'titulo': item.findtext('imprensa_pais_1_artigo_0_titulo')
-                    },
-                    {
-                        'link': item.findtext('imprensa_pais_1_artigo_1_links_0_link'),
-                        'titulo': item.findtext('imprensa_pais_1_artigo_1_titulo')
-                    },
-                    {
-                        'link': item.findtext('imprensa_pais_1_artigo_2_links_0_link'),
-                        'titulo': item.findtext('imprensa_pais_1_artigo_2_titulo')
-                    },
-                    {
-                        'link': item.findtext('imprensa_pais_1_artigo_3_links_0_link'),
-                        'titulo': item.findtext('imprensa_pais_1_artigo_3_titulo')
-                    },
-                    {
-                        'link': item.findtext('imprensa_pais_1_artigo_4_links_0_link'),
-                        'titulo': item.findtext('imprensa_pais_1_artigo_4_titulo')
-                    }
-                ],
-                'nome': item.findtext('imprensa_pais_1_nome')
-            }
-        ]
-        outros_videos = [
-            {'link': item.findtext('outros_videos_0_link'), 'titulo': item.findtext('outros_videos_0_titulo')},
-            {'link': item.findtext('outros_videos_1_link'), 'titulo': item.findtext('outros_videos_1_titulo')},
-            {'link': item.findtext('outros_videos_2_link'), 'titulo': item.findtext('outros_videos_2_titulo')}
-        ]
-        palavras_sobre = [
-            {'texto': item.findtext('palavras_sobre_0_texto'), 'titulo': item.findtext('palavras_sobre_0_titulo')},
-            {'texto': item.findtext('palavras_sobre_1_texto'), 'titulo': item.findtext('palavras_sobre_1_titulo')},
-            {'texto': item.findtext('palavras_sobre_2_texto'), 'titulo': item.findtext('palavras_sobre_2_titulo')},
-            {'texto': item.findtext('palavras_sobre_3_texto'), 'titulo': item.findtext('palavras_sobre_3_titulo')}
-        ]
-        # premios = [
-        #     item.findtext('premios_0_premio'),
-        #     item.findtext('premios_1_premio'),
-        #     item.findtext('premios_2_premio'),
-        #     item.findtext('premios_3_premio'),
-        #     item.findtext('premios_4_premio'),
-        #     item.findtext('premios_5_premio'),
-        #     item.findtext('premios_6_premio'),
-        #     item.findtext('premios_7_premio'),
-        #     item.findtext('premios_8_premio'),
-        #     item.findtext('premios_9_premio'),
-        #     item.findtext('premios_10_premio'),
-        #     item.findtext('premios_11_premio'),
-        #     item.findtext('premios_12_premio'),
-        #     item.findtext('premios_13_premio'),
-        #     item.findtext('premios_14_premio'),
-        #     item.findtext('premios_15_premio')
-        # ]
-        premios = []
-        i = 0
-        while True:
-            premio_key = f'premios_{i}_premio'
-            premio = item.findtext(premio_key)
-            if premio is None:
-                break
-            premios.append(premio)
-            i += 1
-
-        print(premios)
+        
         realizador = item.findtext('realizador')
         sinopse = item.findtext('sinopse')
-        tecnicos = [
-            {'accao': item.findtext('tecnicos_0_accao'), 'tecnico': item.findtext('tecnicos_0_tecnico')},
-            {'accao': item.findtext('tecnicos_1_accao'), 'tecnico': item.findtext('tecnicos_1_tecnico')},
-            {'accao': item.findtext('tecnicos_2_accao'), 'tecnico': item.findtext('tecnicos_2_tecnico')},
-            {'accao': item.findtext('tecnicos_3_accao'), 'tecnico': item.findtext('tecnicos_3_tecnico')}
-        ]
         thumbnail = item.findtext('thumbnail')
         trailer = item.findtext('trailer')
         video_page = item.findtext('video_page')
         videodrop = item.findtext('videodrop')
-        vozes = [
-            {'voz': item.findtext('vozes_0_voz'), 'vozes': item.findtext('vozes_0_vozes')},
-            {'voz': item.findtext('vozes_1_voz'), 'vozes': item.findtext('vozes_1_vozes')},
-            {'voz': item.findtext('vozes_2_voz'), 'vozes': item.findtext('vozes_2_vozes')},
-            {'voz': item.findtext('vozes_3_voz'), 'vozes': item.findtext('vozes_3_vozes')}
-        ]
+        vozes_text = item.findtext('vozes')
+        if vozes_text:
+            vozes_list = [voz.strip() for voz in vozes_text.split('\n') if voz.strip()]
+        else:
+            vozes_list = []
 
-        
+        # print(vozes_list)
         # Concatenate all the extracted values into a single string
-        output = f"Title: {title}\nAno: {ano}\nCom: {com}\nDistribuicao Comercial: {distribuicao_comercial}\nEquipa Argumento: {equipa_argumento}\nEquipa Producao: {equipa_producao}\nEquipa Realizacao: {equipa_realizacao}\nFestivais: {festivais}\nFicha Tecnica Ano: {ficha_tecnica_ano}\nFicha Tecnica Duracao: {ficha_tecnica_duracao}\nFicha Tecnica Genero: {ficha_tecnica_genero}\nFicha Tecnica Suporte: {ficha_tecnica_suporte}\nFinanciamento Financiadores: {financiamento_financiadores}\nFinanciamento Orcamento: {financiamento_orcamento}\nImprensa: {imprensa}\nOutros Videos: {outros_videos}\nPalavras Sobre: {palavras_sobre}\nPremios: {premios}\nRealizador: {realizador}\nSinopse: {sinopse}\nTecnicos: {tecnicos}\nThumbnail: {thumbnail}\nTrailer: {trailer}\nVideo Page: {video_page}\nVideodrop: {videodrop}\nVozes: {vozes}"
+        # output = f"Title: {title}\nAno: {ano}\nCom: {com}\nDistribuicao Comercial: {distribuicao_comercial}\nEquipa Argumento: {equipa_argumento}\nEquipa Producao: {equipa_producao}\nEquipa Realizacao: {equipa_realizacao}\nFestivais: {festivais}\nFicha Tecnica Ano: {ficha_tecnica_ano}\nFicha Tecnica Duracao: {ficha_tecnica_duracao}\nFicha Tecnica Genero: {ficha_tecnica_genero}\nFicha Tecnica Suporte: {ficha_tecnica_suporte}\nFinanciamento Financiadores: {financiamento_financiadores}\nFinanciamento Orcamento: {financiamento_orcamento}\nImprensa: {imprensa}\nOutros Videos: {outros_videos}\nPalavras Sobre: {palavras_sobre}\nPremios: {premios}\nRealizador: {realizador}\nSinopse: {sinopse}\nTecnicos: {tecnicos}\nThumbnail: {thumbnail}\nTrailer: {trailer}\nVideo Page: {video_page}\nVideodrop: {videodrop}\nVozes: {vozes_list}"
 
         # Print the concatenated string
         # print(output)
+        filme = Filme.objects.create(
+            title=title,
+            slug=slug,
+            ano=ano,
+            com=com,
+            realizador=realizador,
+            sinopse=sinopse,
+            thumbnail=thumbnail,
+            trailer=trailer,
+            video_page=video_page,
+            videodrop=videodrop,
+            vozes=vozes_list,
+            equipa_argumento=equipa_argumento,
+            equipa_producao=equipa_producao,
+            equipa_realizacao=equipa_realizacao,
+            ficha_tecnica_ano=ficha_tecnica_ano,
+            ficha_tecnica_duracao=ficha_tecnica_duracao,
+            ficha_tecnica_genero=ficha_tecnica_genero,
+            ficha_tecnica_suporte=ficha_tecnica_suporte,
+            financiamento_financiadores=financiamento_financiadores,
+            financiamento_orcamento=financiamento_orcamento,
+            
+        )
 
- 
+        # Save the filme instance to the database
+        filme.save()
+        print(filme.pk)
+# --------------------------------------------------------------------------------------------------
+
+        outros_videos = []
+        i = 0
+        while True:
+            link_key = f'outros_videos_{i}_link'
+            titulo_key = f'outros_videos_{i}_titulo'
+            link = item.findtext(link_key)
+            titulo = item.findtext(titulo_key)
+            if link is None or titulo is None:
+                break
+            outro_video = OutrosVideos.objects.create(
+                # id=last_outros_video_id + 1 + i,
+                titulo=titulo,
+                link=link,
+                filme_id=filme.pk
+            )
+            outros_videos.append(outro_video)
+            i += 1
+  
+        print(outros_videos)
+# --------------------------------------------------------------------------------------------------
+
+        tecnicos = []
+
+        i = 0
+        while True:
+            tecnico_key = f'tecnicos_{i}_tecnico'
+            accao_key = f'tecnicos_{i}_accao'
+            
+            tecnico = item.findtext(tecnico_key)
+            accao = item.findtext(accao_key)
+            
+            if tecnico is None or accao is None:
+                break
+
+            tecnico_obj = Tecnicos.objects.create(
+                tecnico=tecnico,
+                accao=accao,
+                filme_id=filme.pk
+            )
+            tecnicos.append(tecnico_obj)
+            
+            i += 1
+        print(tecnicos)
+# --------------------------------------------------------------------------------------------------
+
+        premios = []
+
+        i = 0
+        while True:
+            premio_key = f'premios_{i}_premio'
+            premio = item.findtext(premio_key)
+            
+            if premio is None:
+                break
+
+            premio_obj = Premios.objects.create(
+                premio=premio,
+                filme_id=filme.pk
+            )
+            premios.append(premio_obj)
+            
+            i += 1   
+        print(premios) 
+# --------------------------------------------------------------------------------------------------
+        palavras_sobre = []
+
+        i = 0
+        while True:
+            texto_key = f'palavras_sobre_{i}_texto'
+            titulo_key = f'palavras_sobre_{i}_titulo'
+            texto = item.findtext(texto_key)
+            titulo = item.findtext(titulo_key)
+            
+            if texto is None or titulo is None:
+                break
+
+            palavra_sobre_obj = PalavrasSobre.objects.create(
+                texto=texto,
+                titulo=titulo,
+                filme_id=filme.pk
+            )
+            palavras_sobre.append(palavra_sobre_obj)
+            
+            i += 1
+
+        print(palavras_sobre)
+# --------------------------------------------------------------------------------------------------
+        imprensa = []
+
+        i = 0
+        while True:
+            artigo_key = f'imprensa_pais_{i}_artigo'
+            nome_key = f'imprensa_pais_{i}_nome'
+            
+            if item.findtext(artigo_key) is None:
+                break
+
+            artigo = item.findtext(artigo_key)
+            nome = item.findtext(nome_key)
+
+            links = []
+            j = 0
+            while True:
+                link_key = f'imprensa_pais_{i}_artigo_{j}_links_0_link'
+                titulo_key = f'imprensa_pais_{i}_artigo_{j}_titulo'
+                
+                if item.findtext(link_key) is None:
+                    break
+                
+                link = item.findtext(link_key)
+                titulo = item.findtext(titulo_key)
+                
+                links.append({'link': link, 'titulo': titulo})
+                j += 1
+
+            imprensa_obj = Imprensa.objects.create(
+                artigo=artigo,
+                nome=nome,
+                filme_id=filme.pk
+            )
+            imprensa.append({'artigo': artigo, 'links': links, 'nome': nome})
+            i += 1
+        print(imprensa)
+
+# --------------------------------------------------------------------------------------------------
+        festivais = []
+
+        i = 0
+        while True:
+            festival_key = f'festivais_{i}_festival'
+            festival = item.findtext(festival_key)
+            
+            if festival is None:
+                break
+            
+            festival_obj = Festivais.objects.create(
+                festival=festival,
+                filme_id=filme.pk
+            )
+            festivais.append(festival)
+            i += 1
+        print(festivais)
+# --------------------------------------------------------------------------------------------------
+        distribuicao_comercial = []
+
+        i = 0
+        while True:
+            prefix = f'distribuicao_comercial_{i}_'
+            estreia_em_sala = item.findtext(prefix + 'estreia_em_sala')
+            pais = item.findtext(prefix + 'pais')
+            tv = item.findtext(prefix + 'tv')
+            vod = item.findtext(prefix + 'vod')
+
+            # If any of the fields is None, it means there are no more entries
+            if estreia_em_sala is None or pais is None or tv is None or vod is None:
+                break
+
+            comercial_obj = Comercial.objects.create(
+                estreia=estreia_em_sala,
+                pais=pais,
+                tv=tv,
+                vod=vod,
+                filme_id=filme.pk
+            )
+
+            distribuicao_comercial.append({
+                'estreia_em_sala': estreia_em_sala,
+                'pais': pais,
+                'tv': tv,
+                'vod': vod
+            })
+
+            i += 1
+        print(distribuicao_comercial)
+# --------------------------------------------------------------------------------------------------
 
     print('Database population completed.')
 
@@ -186,23 +294,3 @@ if __name__ == '__main__':
     populate_database_from_xml(xml_file_name)
 
 
-    def extract_repeating_fields(item, field_name):
-        values = []
-        i = 0
-        while True:
-            field_key = f'{field_name}_{i}'
-            field_value = item.findtext(field_key)
-            if field_value is None:
-                break
-            values.append(field_value)
-            i += 1
-        return values
-
-    # Example usage:
-    fields_to_extract = ['premios', 'palavras_sobre', 'outros_fields']  # Add other field names here
-    data = {}
-    for field_name in fields_to_extract:
-        values = extract_repeating_fields(item, field_name)
-        data[field_name] = values
-
-    print(data)
