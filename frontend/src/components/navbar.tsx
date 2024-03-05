@@ -39,7 +39,8 @@ export function Navbar() {
 
     if (menuItems) {
       return (
-        <Menu key={link.label} trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal>
+        <Menu key={link.label} trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal position="bottom-start">
+
           <Menu.Target>
             <a
               href={link.link}
@@ -52,7 +53,7 @@ export function Navbar() {
               </Center>
             </a>
           </Menu.Target>
-          <Menu.Dropdown>{menuItems}</Menu.Dropdown>
+          <Menu.Dropdown classNames={{}}>{menuItems}</Menu.Dropdown>
         </Menu>
       );
     }
@@ -75,7 +76,7 @@ export function Navbar() {
 
     if (menuItems) {
       return (
-        <Menu key={link.label} trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal>
+        <Menu key={link.label} trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal position="bottom-end" >
           <Menu.Target>
             <a
               href={link.link}
@@ -88,7 +89,9 @@ export function Navbar() {
               </Center>
             </a>
           </Menu.Target>
-          <Menu.Dropdown>{menuItems}</Menu.Dropdown>
+          <Menu.Dropdown classNames={{
+          dropdown: 'dropdown',
+        }}>{menuItems}</Menu.Dropdown>
         </Menu>
       );
     }
