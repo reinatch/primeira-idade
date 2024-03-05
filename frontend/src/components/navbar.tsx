@@ -71,7 +71,7 @@ export function Navbar() {
   });
   const dropSobre = sobre.map((link) => {
     const menuItems = link.links?.map((item) => (
-      <Menu.Item key={item.link}>{item.label}</Menu.Item>
+      <Menu.Item className={classes.dropdowni} key={item.link}>{item.label}</Menu.Item>
     ));
 
     if (menuItems) {
@@ -89,9 +89,7 @@ export function Navbar() {
               </Center>
             </a>
           </Menu.Target>
-          <Menu.Dropdown classNames={{
-          dropdown: 'dropdown',
-        }}>{menuItems}</Menu.Dropdown>
+          <Menu.Dropdown className={classes.dropdown}>{menuItems}</Menu.Dropdown>
         </Menu>
       );
     }

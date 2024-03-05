@@ -22,7 +22,7 @@
     padding: rem(8px) rem(12px);
     border-radius: var(--mantine-radius-sm);
     text-decoration: none;
-    color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-light));
+    color: white;
     font-size: var(--mantine-font-size-sm);
     font-weight: 500;
   
@@ -35,9 +35,17 @@
     margin-right: rem(5px);
   }
 .dropdown{
-  color: red;
-    background-color: none !important;
+    color: red !important;
+    background-color:transparent !important;
     --popover-border-color:none;
     border: none;
+  }
+.dropdowni{
+    color: rgb(255, 255, 255) !important;
+    text-align: right;
+  }
+.dropdowni:hover{
+    color: rgb(255, 0, 0) !important;
+    text-align: right;
   }
   
