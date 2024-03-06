@@ -1,6 +1,8 @@
 from django.contrib import admin
-import nested_admin
-
+from django import forms
+from galleryfield.mixins import GalleryFormMediaMixin
+from galleryfield.models import BuiltInGalleryImage
+from ckeditor.widgets import CKEditorWidget
 # Register your models here.
 from .models import *
 
@@ -32,12 +34,20 @@ class OutrosVideosInline(admin.StackedInline):
     class Meta:
         fields = '__all__'
 
-class FilmeAdmin(admin.ModelAdmin):
+class FilmeGalleryAdminForm(GalleryFormMediaMixin, forms.ModelForm):
     class Meta:
         model = Filme
         fields = '__all__'
         
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["galery"].required = False
+        # self.fields["content"].widget = CKEditorWidget()
+class FilmeAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
+
+    form = FilmeGalleryAdminForm
     inlines = [
         TecnicosInline,
         FestivaisInline,
@@ -50,6 +60,5 @@ class FilmeAdmin(admin.ModelAdmin):
     
 
 admin.site.register(Filme, FilmeAdmin)
-# admin.site.register(Filme)
-# admin.site.register(Category)
-# admin.site.register(FichaTecnica)
+
+admin.site.register(BuiltInGalleryImage)

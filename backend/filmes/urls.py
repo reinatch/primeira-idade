@@ -1,5 +1,5 @@
 
-from django.urls import path
+from django.urls import include, path
 from .views import *
 from django.conf import settings
 from drf_yasg import openapi
@@ -28,6 +28,8 @@ urlpatterns = [
     #          name='filme-list-category'),
     path('filmes/<int:pk>/',
          filme_detail, name='filme-detail'),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('filer/', include('filer.urls')),
 ]
 if settings.DEBUG:
     from django.conf.urls.static import static

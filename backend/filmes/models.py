@@ -6,9 +6,19 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 # Create your models here.
+from galleryfield.fields import GalleryField
+from galleryfield.models import BuiltInGalleryImage
+from ckeditor.fields import RichTextField
+from filer.fields.image import FilerImageField
+from filer.fields.file import FilerFileField
+from django.core.files.images import get_image_dimensions
+import base64
+from PIL import Image
+import io
 
-
-
+from backend import settings
+import logging
+logger = logging.getLogger(__name__)
     
 class Filme(models.Model):
     CATEGORIES = (
@@ -22,6 +32,7 @@ class Filme(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     realizador = models.CharField(max_length=255, blank=True, null=True)
     sinopse = models.TextField(max_length=2500, blank=True, null=True)
+    logo = FilerImageField(null=True, blank=True, related_name="thumbnail", on_delete=models.CASCADE, help_text="thumbnail")
     trailer = models.URLField(default='', blank=True, null=True)
     ano = models.CharField(max_length=255, default="", blank=True, null=True)
     genero = models.CharField(max_length=255, default="", blank=True, null=True)
@@ -42,7 +53,7 @@ class Filme(models.Model):
     # financiamento_galery=models.CharField(max_length=255, default="", blank=True, null=True)
     updated = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
-    # galery = GalleryField(verbose_name=('Photos'),blank=True, null=True)
+    galery = GalleryField(verbose_name=('Photos'),blank=True, null=True)
     videodrop = models.URLField(default='', blank=True, null=True)
     thumbnail = models.CharField(max_length=255, default="", blank=True, null=True)
     video_page = models.URLField(default='', blank=True, null=True)

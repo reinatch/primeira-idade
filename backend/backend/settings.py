@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 import pymysql
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,11 +40,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'filmes',
     'rest_framework',
+    'sorl.thumbnail',
+    'galleryfield',
+    # 'crispy_forms',
+    # 'eventtools',
+    'ckeditor',
+    'ckeditor_uploader',
     "corsheaders",
     'drf_yasg',
     'nested_admin',
-    "django_mysql",
-    # 'djangorestframework_simplejwt',
+    'easy_thumbnails',
+    'filer',
 ]
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -147,9 +154,63 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static/"),
+
+
+]
+
+MEDIA_URL = "/media/images/"
+MEDIA_ROOT = os.path.join(BASE_DIR, '/media/images/')
+
+STATIC_ROOT = '/static/'
+# MEDIA_URL = "/media/images/"
+# MEDIA_ROOT = '/home/valeutea/backend.valentinapelayoatilano.com/media/images/'
+
+# STATIC_ROOT = '/home/valeutea/backend.valentinapelayoatilano.com/static'
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SENDFILE_ROOT = os.path.join(BASE_DIR, 'media/images/')
+SENDFILE_URL = "media/"
+
+DJANGO_GALLERY_FIELD_CONFIG = {
+    # "bootstrap_version": 4,
+    # "assets": {
+    #     "jquery": "path/or/url/to/jquery.js",
+    #     "bootstrap_css": "path/or/url/to/bootstrap.css",
+    #     "bootstrap_js": "path/or/url/to/bootstrap.js",
+    #     "extra_js": [],
+    #     "extra_css": [],
+    # },
+
+    "thumbnails": {
+        "size": "120x120",
+        "quality": 80
+    },
+
+    "jquery_file_upload_ui_options": {
+        "autoUpload": True,
+        "imageMaxWidth": 1024,
+        "imageMaxHeight": 1024,
+    },
+
+    "jquery_file_upload_ui_sortable_options": {
+        "disabled": False,
+        "delay": 300,
+        "animation": 200,
+    },
+    "prompt_alert_if_changed_on_window_reload": True,
+    "widget_hidden_input_css_class": "django-galleryfield",
+
+}
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"

@@ -2,12 +2,12 @@ import { Menu, Group, Center, Burger, Container } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 // import { IconChevronDown } from '@tabler/icons-react';
 // import { MantineLogo } from '@mantinex/mantine-logo';
-import classes from './navbar.module.css';
+import classes from '@/styles/navbar.module.css';
 import Link from 'next/link';
 
 const filmes = [
   {
-    link: '#1',
+    link: 'filmes',
     label: 'Filmes',
     links: [
       { link: '/docs', label: 'Produções' },
@@ -42,16 +42,16 @@ export function Navbar() {
         <Menu key={link.label} trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal position="bottom-start">
 
           <Menu.Target>
-            <a
+            <Link
               href={link.link}
               className={classes.link}
-              onClick={(event) => event.preventDefault()}
+              // onClick={(event) => event.preventDefault()}
             >
               <Center>
                 <span className={classes.linkLabel}>{link.label}</span>
                 {/* <IconChevronDown size="0.9rem" stroke={1.5} /> */}
               </Center>
-            </a>
+            </Link>
           </Menu.Target>
           <Menu.Dropdown classNames={{}}>{menuItems}</Menu.Dropdown>
         </Menu>
@@ -114,7 +114,7 @@ export function Navbar() {
                 {dropFilmes}
             </Group>
 
-            <Link href={'/'}> PRIMEIRA IDADE </Link>
+            <Link href='/'> PRIMEIRA IDADE </Link>
 
             <Group gap={5} visibleFrom="sm">
                 {dropSobre}

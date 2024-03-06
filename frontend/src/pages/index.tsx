@@ -1,18 +1,20 @@
 import Image from 'next/image'
-import {Navbar} from '../components/navbar'
+import {Navbar} from '@/components/navbar'
+import Intro from '@/components/Intro'
+import MovieList from '@/components/MovieList'
+import useMovieList from '@/hooks/useMovieList';
 
 
 export default function Home() {
+  // const {data: movies = [] } = useMovieList();
+  // console.log(movies)
   return (
-    <>
+    <div className='h-full'>
     
     <Navbar/>
-    <div className=' overflow-hidden h-screen w-screen'>
-
-
-    <video className='absolute w-full h-full object-cover -z-1'  src={'https://www.dropbox.com/s/fajwd1m690d0aoq/FANTASMASbitrate50.mp4?dl=0&raw=1'} autoPlay/>
+    <Intro/>
+    {/* <MovieList data= {movies}/> */}
     </div>
-    </>
     
      
 )
