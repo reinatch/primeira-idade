@@ -1,6 +1,6 @@
 import useBillboard from '@/hooks/useBillboard'
 import React from 'react'
-
+import Client from '@/libs/client'
 const Intro = () => {
     const {data} = useBillboard();
     console.log(data)
@@ -9,7 +9,7 @@ const Intro = () => {
 
 
     <div className="relative h-[56.25vw]">
-      <video poster={data?.thumbnailUrl} className="w-full h-[100vh] object-cover brightness-[60%] transition duration-500" autoPlay muted loop src={data?.videodrop}></video>
+      <video poster={Client + data?.thumbnail.file} className="w-full h-[100vh] object-cover brightness-[60%] transition duration-500" autoPlay muted loop src={data?.videodrop}></video>
       <div className="absolute top-[30%] md:top-[40%] ml-4 md:ml-16">
         {/* <p className="text-white text-1xl md:text-5xl h-full w-[50%] lg:text-6xl font-bold">
           {data?.title}

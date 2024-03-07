@@ -25,6 +25,7 @@ class FilmeSerializer(serializers.ModelSerializer):
         model = Filme
         fields = '__all__'
         depth = 2
+        lookup_field = 'slug'
 
 
 # class ProjectAttachmentsSerializer(serializers.ModelSerializer):

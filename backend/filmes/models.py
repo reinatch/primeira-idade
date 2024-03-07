@@ -32,7 +32,7 @@ class Filme(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     realizador = models.CharField(max_length=255, blank=True, null=True)
     sinopse = models.TextField(max_length=2500, blank=True, null=True)
-    logo = FilerImageField(null=True, blank=True, related_name="thumbnail", on_delete=models.CASCADE, help_text="thumbnail")
+    thumbnail = FilerImageField(null=True, blank=True, related_name="thumbnail", on_delete=models.CASCADE, help_text="thumbnail")
     trailer = models.URLField(default='', blank=True, null=True)
     ano = models.CharField(max_length=255, default="", blank=True, null=True)
     genero = models.CharField(max_length=255, default="", blank=True, null=True)
@@ -55,7 +55,6 @@ class Filme(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     galery = GalleryField(verbose_name=('Photos'),blank=True, null=True)
     videodrop = models.URLField(default='', blank=True, null=True)
-    thumbnail = models.CharField(max_length=255, default="", blank=True, null=True)
     video_page = models.URLField(default='', blank=True, null=True)
     slug = models.SlugField(max_length=250, unique_for_date='id', default="")
 

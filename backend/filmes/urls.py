@@ -26,7 +26,7 @@ urlpatterns = [
     path('filmes/', filme_list, name='filme-list'),
     #     path('filmes/<str:category>/', filme_filtered,
     #          name='filme-list-category'),
-    path('filmes/<int:pk>/',
+    path('filmes/<str:slug>/',
          filme_detail, name='filme-detail'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('filer/', include('filer.urls')),

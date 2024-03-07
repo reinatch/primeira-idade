@@ -107,7 +107,8 @@ export function Navbar() {
   });
 
   return (
-    <header className={classes.header}>
+    // mix-blend-difference
+    <header className='w-screen text-white z-10 fixed h-[rem(56px)] ' >
       <Container size="xxl">
         <div className={classes.inner}>
             <Group gap={5} visibleFrom="sm">
