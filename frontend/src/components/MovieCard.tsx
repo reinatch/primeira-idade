@@ -17,6 +17,7 @@ const MovieCard: React.FC<MovieCardProps> = ({data}) => {
         <div className='absolute z-10 inline-block w-full text-center text-yellow-500 bottom-1'> 
         <p className='leading-tight'>{data.title}</p>
         <p className=''>{data.realizador}</p>
+        <p className=''>{data.category}</p>
         
         </div>
       </Link>

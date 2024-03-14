@@ -4,22 +4,25 @@ import { useDisclosure } from '@mantine/hooks';
 // import { MantineLogo } from '@mantinex/mantine-logo';
 import classes from '@/styles/navbar.module.css';
 import Link from 'next/link';
+import {useMovieStore} from '@/store/store';
+import { useRouter } from 'next/router';
 
 const filmes = [
   {
-    link: 'filmes',
+    link: '/filmes',
     label: 'Filmes',
+    category:'',
     links: [
-      { link: '/docs', label: 'Produções' },
-      { link: '/resources', label: 'Co-Produções' },
-      { link: '/community', label: 'Futuro' },
+      { link: '/filmes/docs', label: 'Produções', category: 'production' },
+      { link: '/filmes/resources', label: 'Co-Produções', category: 'co-production'  },
+      { link: '/filmes/community', label: 'Futuro', category: 'future'  },
     ],
   },
 ];
 const sobre = [
 
   {
-    link: '#2',
+    link: '/about',
     label: 'Sobre',
     links: [
       { link: '/faq', label: 'Produtora' },
@@ -30,11 +33,18 @@ const sobre = [
 ];
 
 export function Navbar() {
+  const router = useRouter()
   const [opened, { toggle }] = useDisclosure(false);
-
+ const { setFilter } = useMovieStore((state: any) => state);
   const dropFilmes = filmes.map((link) => {
     const menuItems = link.links?.map((item) => (
-      <Menu.Item key={item.link}>{item.label}</Menu.Item>
+      // router.push(`/filmes`, router.asPath),
+      <Menu.Item key={item.link} onClick={() =>(  setFilter(`${item.category}`))}>
+        <Link href={link.link}>
+        {item.label}
+        </Link>
+        
+        </Menu.Item>
     ));
 
     if (menuItems) {
@@ -45,7 +55,9 @@ export function Navbar() {
             <Link
               href={link.link}
               className={classes.link}
+              onClick={() =>(  setFilter(`${link.category}`))}
               // onClick={(event) => event.preventDefault()}
+              
             >
               <Center>
                 <span className={classes.linkLabel}>{link.label}</span>
@@ -108,7 +120,7 @@ export function Navbar() {
 
   return (
     // mix-blend-difference
-    <header className='w-screen text-white z-10 fixed h-[rem(56px)] ' >
+    <header className='w-screen text-white z-50 fixed h-[rem(56px)] ' >
       <Container size="xxl">
         <div className={classes.inner}>
             <Group gap={5} visibleFrom="sm">

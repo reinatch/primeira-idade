@@ -2,12 +2,16 @@ import xml.etree.ElementTree as ET
 import os
 import django
 import json
+from django.conf import settings
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
+django.setup()
 from django.db.models import Max
+from filer.models import Image as FilerImage
+from django.core.files.base import ContentFile
 
 # from bs4 import BeautifulSoup
 # from bs4.element import MarkupResemblesUnicode
 # from galleryfield.models import BuiltInGalleryImage
-from django.conf import settings
 from django.core.management import call_command
 from django.core.files import File
 import io
@@ -15,8 +19,6 @@ import io
 import codecs
 # from backend.filmes import models
 # Set up Django environment
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
-django.setup()
 # Manually configure Django settings if running outside the Django project
 if not settings.configured:
     settings.configure()
@@ -26,6 +28,27 @@ from filmes.models import *
 
 # Import the BuiltInGalleryImage model from the correct module
 # 
+def create_thumbnail(image_path):
+    try:
+        # Create a new FilerImage instance
+        filer_image = FilerImage()
+
+        # Open the image file
+        with open(image_path, 'rb') as f:
+            # Set the original image file
+            filer_image.original_filename = os.path.basename(image_path)
+            filer_image.file = ContentFile(f.read())
+
+        # Save the FilerImage instance to generate thumbnails
+        filer_image.save()
+
+        print(f"Thumbnail created successfully for image: {image_path}")
+        
+        # Return the FilerImage instance
+        return filer_image
+    except Exception as e:
+        print(f"Error creating thumbnail for image {image_path}: {e}")
+        return None
 
 def populate_database_from_xml(xml_file):
     # Parse the XML file
@@ -40,6 +63,7 @@ def populate_database_from_xml(xml_file):
     # Iterate over the XML elements and populate the database
     for item in root:
         print(item, '_________________________________________________________________')
+        category = item.findtext('tiposdefilmes')
         title = item.findtext('title')
         slug = item.findtext('slug')
         ano = item.findtext('ano')
@@ -54,10 +78,10 @@ def populate_database_from_xml(xml_file):
         ficha_tecnica_suporte = item.findtext('ficha_tecnica_suporte')
         financiamento_financiadores = item.findtext('financiamento_financiadores')
         financiamento_orcamento = item.findtext('financiamento_orcamento')
-        
         realizador = item.findtext('realizador')
         sinopse = item.findtext('sinopse')
-        thumbnail = item.findtext('thumbnail')
+        # thumbnail_path = item.findtext('imagespath')
+        # thumbnail = create_thumbnail(thumbnail_path)
         trailer = item.findtext('trailer')
         video_page = item.findtext('video_page')
         videodrop = item.findtext('videodrop')
@@ -74,13 +98,14 @@ def populate_database_from_xml(xml_file):
         # Print the concatenated string
         # print(output)
         filme = Filme.objects.create(
+            category=category,
             title=title,
             slug=slug,
             ano=ano,
             com=com,
             realizador=realizador,
             sinopse=sinopse,
-            thumbnail=thumbnail,
+            # thumbnail=thumbnail,
             trailer=trailer,
             video_page=video_page,
             videodrop=videodrop,
@@ -120,7 +145,7 @@ def populate_database_from_xml(xml_file):
             outros_videos.append(outro_video)
             i += 1
   
-        print(outros_videos)
+        # print(outros_videos)
 # --------------------------------------------------------------------------------------------------
 
         tecnicos = []
@@ -144,7 +169,7 @@ def populate_database_from_xml(xml_file):
             tecnicos.append(tecnico_obj)
             
             i += 1
-        print(tecnicos)
+        # print(tecnicos)
 # --------------------------------------------------------------------------------------------------
 
         premios = []
@@ -164,7 +189,7 @@ def populate_database_from_xml(xml_file):
             premios.append(premio_obj)
             
             i += 1   
-        print(premios) 
+        # print(premios) 
 # --------------------------------------------------------------------------------------------------
         palavras_sobre = []
 
@@ -187,7 +212,7 @@ def populate_database_from_xml(xml_file):
             
             i += 1
 
-        print(palavras_sobre)
+        # print(palavras_sobre)
 # --------------------------------------------------------------------------------------------------
         imprensa = []
 
@@ -195,36 +220,39 @@ def populate_database_from_xml(xml_file):
         while True:
             artigo_key = f'imprensa_pais_{i}_artigo'
             nome_key = f'imprensa_pais_{i}_nome'
-            
+                    
             if item.findtext(artigo_key) is None:
                 break
 
             artigo = item.findtext(artigo_key)
             nome = item.findtext(nome_key)
-
             links = []
+
             j = 0
             while True:
                 link_key = f'imprensa_pais_{i}_artigo_{j}_links_0_link'
                 titulo_key = f'imprensa_pais_{i}_artigo_{j}_titulo'
-                
+                        
                 if item.findtext(link_key) is None:
                     break
-                
+                        
                 link = item.findtext(link_key)
                 titulo = item.findtext(titulo_key)
-                
+                        
                 links.append({'link': link, 'titulo': titulo})
                 j += 1
 
-            imprensa_obj = Imprensa.objects.create(
-                artigo=artigo,
-                nome=nome,
-                filme_id=filme.pk
-            )
-            imprensa.append({'artigo': artigo, 'links': links, 'nome': nome})
+            for link_info in links:
+                imprensa_obj = Imprensa.objects.create(
+                    artigo=artigo,
+                    pais=nome,
+                    link=link_info['link'],
+                    titulo=link_info['titulo'],
+                    filme_id=filme.pk
+                )
+                imprensa.append({'artigo': artigo, 'titulo': link_info['titulo'], 'link': link_info['link'], 'pais': nome})
+
             i += 1
-        print(imprensa)
 
 # --------------------------------------------------------------------------------------------------
         festivais = []
@@ -243,7 +271,7 @@ def populate_database_from_xml(xml_file):
             )
             festivais.append(festival)
             i += 1
-        print(festivais)
+        # print(festivais)
 # --------------------------------------------------------------------------------------------------
         distribuicao_comercial = []
 
@@ -275,7 +303,7 @@ def populate_database_from_xml(xml_file):
             })
 
             i += 1
-        print(distribuicao_comercial)
+        # print(distribuicao_comercial)
 # --------------------------------------------------------------------------------------------------
 
     print('Database population completed.')

@@ -2,25 +2,19 @@ import useBillboard from '@/hooks/useBillboard'
 import React from 'react'
 import Client from '@/libs/client'
 import { Movie } from '@/types';
-import useMovieStore from '@/store/store';
-const Intro = () => {
-  // const { movies} = useMovieStore();
-  // Count the number of movies
-  // const moviesCount = movies.length;
-  
-  // Generate a random index based on movies count
-  // const randomIndex = Math.floor(Math.random() * moviesCount);
+import {useMovieStore} from '@/store/store';
+const Player = ({ movie }: { movie: Movie }) => {
+
   
   // Example Axios GET request to retrieve a random movie
-  const {data} = useBillboard();
-  // const data = movies[randomIndex];
-    // console.log(movies, 'intro')
+  const data = movie;
+    console.log(movie, 'intro')
   return (
-    <div className='w-screen h-screen overflow-hidden '>
+    <div className='w-screen h-screen'>
 
 
     <div className="relative h-[56.25vw]">
-      <video poster={Client + data?.thumbnail.file} className="w-full h-[100vh] object-cover brightness-[60%] transition duration-500" autoPlay muted loop src={data?.videodrop}></video>
+      <video poster={Client + data?.filme.thumbnail.file} className="w-full h-[100vh] object-cover brightness-[60%] transition duration-500" autoPlay muted loop src={data?.filme.videodrop}></video>
       <div className="absolute top-[30%] md:top-[40%] ml-4 md:ml-16">
         {/* <p className="text-white text-1xl md:text-5xl h-full w-[50%] lg:text-6xl font-bold">
           {data?.title}
@@ -44,4 +38,4 @@ const Intro = () => {
   )
 }
 
-export default Intro
+export default Player
