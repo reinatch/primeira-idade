@@ -1,0 +1,211 @@
+.singlefilme {
+  /* margin: 0; */
+  /* background-color: turquoise;  top: 12vh; */
+  height: 100vh;
+  position: absolute;
+  overflow-x: hidden;
+  /* display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 2fr)); */
+  color: white;
+}
+
+.video {
+  /* position: absolute; */
+}
+.info {
+  /* margin: 0; */
+  /* padding-top: 10vh; */
+  height: 92vh;
+  /* background-color: cadetblue; */
+
+  /* top: 12vh; */
+  /* display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 2fr)); */
+}
+.secundario {
+  /* background-color: cornflowerblue; */
+  height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  /* flex-direction: row; */
+  /* display: grid;
+  grid-template-columns: repeat(4, 1fr [col-end]); */
+  padding-top: 15vh;
+  padding-left: 2.5em;
+  padding-right: 2.5em;
+  overflow-y: auto;
+}
+.thumbtexto {
+  position: absolute;
+  width: 100%;
+  /* height: 100%; */
+  z-index: 50;
+  bottom: 6vh;
+  color: white;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+.realizador {
+  font-family: "Ogg";
+  line-height: 0.5em;
+}
+.titulo-principal {
+  font-family: "Favorit";
+  line-height: 1.5em;
+  font-weight: 100;
+}
+.realizador-principal {
+  font-family: "Ogg";
+  font-size: 2.4em;
+  line-height: 0.5em;
+  font-weight: 100;
+}
+.thumbtexto-principal {
+  position: absolute;
+  width: 100%;
+  /* height: 100%; */
+  z-index: 50;
+  bottom: 1em;
+  color: white;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+.titulo {
+  text-transform: uppercase;
+  margin-top: 1em;
+}
+.sinopse-content {
+  font-size: 2.5em;
+}
+.ogg {
+  font-family: "Ogg";
+}
+.accao {
+  margin-bottom: 0em;
+}
+.reaccao {
+  margin-bottom: 0.5em;
+}
+.favorit {
+  font-family: "Favorit";
+}
+.seta {
+  line-height: 1em;
+}
+.seta-img {
+  width: 2.5em;
+  margin-top: 2em;
+  margin-left: 50%;
+  margin-right: 50%;
+}
+.fullpage {
+  padding: 1em;
+}
+.sino {
+  padding-right: 7.5vw;
+  /* padding-top: 10vh; */
+  padding-left: 40px;
+  /* background-color: royalblue; */
+  justify-content: space-between;
+  display: flex;
+  flex-flow: column wrap;
+}
+.sino p {
+  font-size: 2.3em;
+  line-height: 1.25em;
+}
+.seno {
+  /* padding-top: 10vh; */
+  /* background-color: rgb(124, 54, 28); */
+  /* display: flex; */
+  columns: 150px 2;
+  column-fill: auto;
+  font-size: 1.25em;
+  line-height: 1.35em;
+  padding-right: 40px;
+  height: 80vh;
+}
+.trailer {
+  width: 20vw;
+}
+.coluna {
+  /* background-color: coral; */
+  margin-bottom: 1em;
+}
+.seccao {
+  /* padding: 1em; */
+  font-size: 0.75em;
+  padding-top: 15vh;
+  display: flex;
+  flex-wrap: wrap;
+}
+.tab {
+  max-width: 25vw;
+  flex: 1 0 25%;
+}
+.tab-header {
+}
+.tab-body {
+  /* max-height: 100vh; */
+  padding: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.is-closed .tab-body {
+  /* max-height: 0; */
+}
+.fullpage-container {
+  /* position: absolute; */
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 300vh;
+  color: white;
+}
+.fullpage-wp {
+  display: flex;
+  flex-direction: column;
+}
+.page {
+  height: 100vh;
+  width: 100vw;
+}
+/* .fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  transition: opacity 1s ease;
+}
+
+.fade-leave {}
+
+.fade-leave-active {
+  transition: opacity 1s ease;
+  opacity: 0;
+}
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition-duration: 5s;
+  transition-property: opacity, transform;
+  transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
+  overflow: hidden;
+}
+
+.slide-left-enter,
+.slide-right-leave-active {
+  opacity: 0;
+  transform: translate(20em, 0);
+}
+
+.slide-left-leave-active,
+.slide-right-enter {
+  opacity: 0;
+  transform: translate(-20em, 0);
+} */

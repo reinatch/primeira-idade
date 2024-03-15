@@ -1,20 +1,62 @@
 import Image from 'next/image'
 import {Navbar} from '@/components/navbar'
+import Animation from '@/components/Animation'
 import Intro from '@/components/Intro'
-import MovieList from '@/components/MovieList'
-import useMovieList from '@/hooks/useMovieList';
+// import MovieList from '@/components/MovieList'
+// import useMovieList from '@/hooks/useMovieList';
+
+import  {useMovieStore}  from "@/store/store";
+// export { getServerSideProps } from "@/store/store";
+
+
+// import useStore from '@/store/useStore'
+import { useEffect } from 'react';
+import Esquerda from '@/components/Esquerda';
+import Direita from '@/components/Direita';
+import Layout from '@/components/Layout';
+
 
 
 export default function Home() {
+  const {movies, filter, filteredMovie, setFilter, fetchMovies } = useMovieStore((state: any) => state);
+
+  // useEffect(() => {
+  //   useMovieStore.getState().setMovie(movies);
+  // }, [movies]);
+  // console.log(movies)
+  useEffect(() => {
+    fetchMovies(); // Fetch movies when component mounts
+  }, []);
+  /*hooks*/
   // const {data: movies = [] } = useMovieList();
   // console.log(movies)
+  
+  /*zustand*/
+  // const loadMovies = useStore(state=>state.loadMovies);
+  // const movies = useStore(state=>state.movies);
+  
+  // useEffect(()=>{
+  //   loadMovies()
+  // }, [])
+  
+  console.log(movies,filter,filteredMovie)
+
   return (
+    <>
+<Layout>
+
     <div className='h-full'>
-    
-    <Navbar/>
+    <div className='absolute z-20 w-full h-screen'>
+
+    {/* <Esquerda/>
+    <Direita/> */}
+    </div>
+    {/* <Navbar/> */}
     <Intro/>
     {/* <MovieList data= {movies}/> */}
     </div>
+</Layout>
+    </>
     
      
 )

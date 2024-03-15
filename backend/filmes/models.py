@@ -22,12 +22,12 @@ logger = logging.getLogger(__name__)
     
 class Filme(models.Model):
     CATEGORIES = (
-        ('A', 'Production'),
-        ('B', 'Co-Production'),
-        ('C', 'Future'),
+        ('production', 'Production'),
+        ('co-production', 'Co-Production'),
+        ('future', 'Future'),
     )
     # category = models.ForeignKey(Category, default="", blank=True, null=True, on_delete=models.CASCADE )
-    category = models.CharField(max_length=1, choices=CATEGORIES, blank=False, null=False, default='')
+    category = models.CharField(max_length=13, choices=CATEGORIES, blank=False, null=False, default='')
     # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=255, blank=True, null=True)
     realizador = models.CharField(max_length=255, blank=True, null=True)
@@ -124,7 +124,7 @@ class Imprensa(models.Model):
     # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     artigo = models.CharField(max_length=255, default="", blank=True, null=True)
     titulo = models.CharField(max_length=255, default="", blank=True, null=True)
-    nome = models.CharField(max_length=255, default="", blank=True, null=True)
+    pais = models.CharField(max_length=255, default="", blank=True, null=True)
     link = models.TextField(max_length=2500, blank=True)
     filme = models.ForeignKey(Filme, default="", blank=True, null=True, on_delete=models.CASCADE )
 

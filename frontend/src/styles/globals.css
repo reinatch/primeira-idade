@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@font-face {
+  font-family: "Favorit";
+  font-style: normal;
+  font-weight: normal;
+  src: local("Favorit"), url("/assets/fonts/FavoritStd-Regular.woff") format("woff");
+}
+@font-face {
+  font-family: "Ogg";
+  font-style: normal;
+  font-weight: normal;
+  src: local("Ogg"), url("/assets/fonts/Ogg-Regular.woff") format("woff");
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

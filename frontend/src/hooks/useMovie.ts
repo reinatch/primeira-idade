@@ -3,9 +3,9 @@ import fetcher from '@/libs/fetcher';
 
 const useMovie = (slug?: string) => {
   const { data, error, isLoading } = useSwr( slug ? `/api/movies/${slug}`: null, fetcher, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
+    revalidateIfStale: true,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true,
   });
   console.log(data, 'hook')
   console.log(slug, 'hook')
