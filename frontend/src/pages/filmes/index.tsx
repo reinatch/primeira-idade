@@ -15,18 +15,18 @@ import Client from '@/libs/client'
   const index = () => {
   //   const { filter } = useMovieStore();
   //   const { data: movies = [] } = useMovieList();
-  //   const [filteredMovies, setFilteredMovies] = useState<Movie[]>([]);
   // // console.log(movies, 'filmes')
   // console.log(filter, 'filteredMovie')
-  // useEffect(() => {
-  //   // Filter movies based on the filter state
-  //   const newFilteredMovies = filter === '' ? movies : movies.filter((movie:Movie) => movie.category === filter);
-  //   setFilteredMovies(newFilteredMovies);
-  // }, [filter, movies]);
   // const {movies, filter, filteredMovie, setFilter } = useMovieStore(((state)=>state));
   const { movies, fetchMovies, filter, filteredMovie, setFilter } = useMovieStore((state: any) => state);
-
+    const [filteredMovies, setFilteredMovies] = useState<Movie[]>([]);
+  
   // useEffect(() => {
+    useEffect(() => {
+      // Filter movies based on the filter state
+      const newFilteredMovies = filter === '' ? movies : movies.filter((movie:Movie) => movie.category === filter);
+      setFilteredMovies(newFilteredMovies);
+    }, [filter, movies]);
   //   useMovieStore.getState().setMovie(movies);
   // }, [movies, ])
   // console.log(movies)
@@ -37,8 +37,8 @@ import Client from '@/libs/client'
     <Layout>
 <div className='absolute z-20 w-full h-screen'>
 
-<Esquerda filmes={filteredMovie}/>
-<Direita filmes={filteredMovie}/>
+<Esquerda filmes={filteredMovies}/>
+<Direita filmes={filteredMovies}/>
 </div>
       <div  className='absolute'>
       
